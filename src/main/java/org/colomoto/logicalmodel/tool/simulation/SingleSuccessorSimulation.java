@@ -9,7 +9,7 @@ import java.util.Iterator;
  *
  * @author Aurelien Naldi
  */
-public class SingleSuccessorSimulation implements Iterable<byte[]> {
+public class SingleSuccessorSimulation implements Simulation {
 
     private final DeterministicUpdater updater;
     private final byte[] init;
@@ -23,18 +23,21 @@ public class SingleSuccessorSimulation implements Iterable<byte[]> {
     }
 
     @Override
-    public Iterator<byte[]> iterator() {
-        return new StateIterator(init, updater, max_steps);
+    public StateIterator iterator() {
+        return new StateIteratorSync(init, updater, max_steps);
     }
 }
 
-class StateIterator implements Iterator<byte[]> {
+class StateIteratorSync implements StateIterator {
 
     private byte[] state;
     private final DeterministicUpdater updater;
     private int steps;
+    
+    public void continueOnThisNode () {
+    }
 
-    public StateIterator(byte[] state, DeterministicUpdater updater, int max_steps) {
+    public StateIteratorSync(byte[] state, DeterministicUpdater updater, int max_steps) {
         this.state = state;
         this.updater = updater;
         this.steps = max_steps;
@@ -60,10 +63,5 @@ class StateIterator implements Iterator<byte[]> {
         }
         steps--;
         return ret;
-    }
-
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
     }
 }

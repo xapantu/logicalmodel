@@ -85,11 +85,33 @@ public class TestSimulations {
 		byte[] state3 = {1, 1, 1};
 		SingleSuccessorSimulation simulation = new SingleSuccessorSimulation(updater, state, 100);
 		
-		Iterator<byte[]> it = simulation.iterator();
+		StateIterator it = simulation.iterator();
         
 		Assert.assertArrayEquals(state, it.next());
 		Assert.assertArrayEquals(state2, it.next());
 		Assert.assertArrayEquals(state3, it.next());
+
+	}
+	
+	@Test
+	public void testMultipleSuccessorsSimulation() throws IOException {
+		LogicalModel model = getModel();
+		MultipleSuccessorsUpdater updater = new AsynchronousUpdater(model);
+		byte[] state = {0, 0, 0};
+		byte[] state2 = {1, 0, 0};
+		byte[] state3 = {0, 1, 0};
+		byte[] state4 = {1, 1, 0};
+		MultipleSuccessorsSimulation simulation = new MultipleSuccessorsSimulation(updater, state, 100);
+		
+		StateIterator it = simulation.iterator();
+        
+		Assert.assertArrayEquals(state, it.next());
+		it.continueOnThisNode();
+		Assert.assertArrayEquals(state2, it.next());
+		Assert.assertArrayEquals(state3, it.next());
+		it.continueOnThisNode();
+		Assert.assertArrayEquals(state4, it.next());
+		Assert.assertEquals(null,  it.next());
 
 	}
 }
