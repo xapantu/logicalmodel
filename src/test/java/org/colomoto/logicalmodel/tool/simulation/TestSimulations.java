@@ -79,13 +79,13 @@ public class TestSimulations {
 	@Test
 	public void testSingleSuccessorSimulation() throws IOException {
 		LogicalModel model = getModel();
-        DeterministicUpdater updater = new SynchronousUpdater(model);
+		DeterministicUpdater updater = new SynchronousUpdater(model);
 		byte[] state = {0, 0, 0};
 		byte[] state2 = {1, 1, 0};
 		byte[] state3 = {1, 1, 1};
-        SingleSuccessorSimulation simulation = new SingleSuccessorSimulation(updater, state, 100);
+		SingleSuccessorSimulation simulation = new SingleSuccessorSimulation(updater, state, 100);
 		
-        Iterator<byte[]> it = simulation.iterator();
+		Iterator<byte[]> it = simulation.iterator();
         
 		Assert.assertArrayEquals(state, it.next());
 		Assert.assertArrayEquals(state2, it.next());
